@@ -41,7 +41,7 @@ block {
 
   if Tezos.amount = 0tz then failwith("InsufficientFund") else skip;
 
-  src.balance := src.balance + (Tezos.amount / 1tz);
+  src.balance := src.balance + (Tezos.amount / 1mutez);
   s.ledger[Tezos.sender] := src;
 } with s
 
@@ -57,12 +57,12 @@ block {
   | None -> (failwith ("InvalidContract") : (contract(unit)))
   end;
 
-  const redeemOperation : operation = Tezos.transaction(unit, value * 1tez, receiver);
+  const redeemOperation : operation = Tezos.transaction(unit, value * 1mutez, receiver);
   const operations : list (operation) = list [redeemOperation];
 
   dst.balance := abs(dst.balance - value);
   s.ledger[Tezos.sender] := dst;
-} with ((operations : list (operation)), s)
+} with (operations, s)
 
 function transfer(const owner: address; const receiver: address; const value: nat; const s: storage) : storage is 
 block {
